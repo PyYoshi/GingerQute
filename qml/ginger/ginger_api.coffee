@@ -51,21 +51,21 @@ class GingerAPI
 
   parse: (text, json_obj, correct_color='#0099ff', incorrect_color='#ff0033')->
     correct_text = text
-    gap = 0
-    for result in json_obj['LightGingerTheTextResult']
-      from = result['From']
-      to = result['To']
-      suggestion = '<font color="{0}">' + result['Suggestions'][0]['Text'] + '</font>'
-      correct_text = replace_range(correct_text, from+gap, text.substring(from,to+1).length + from+gap, suggestion)
-      gap += suggestion.length - text.substring(from,to+1).length
-    correct_text = correct_text.format([correct_color])
     incorrect_text = text
     gap = 0
+    gap_i = 0
     for result in json_obj['LightGingerTheTextResult']
-      from = result['From']
-      to = result['To']
-      suggestion = '<font color="{0}">' + text.substring(from,to+1) + '</font>'
-      incorrect_text = replace_range(incorrect_text, from+gap, text.substring(from,to+1).length + from+gap, suggestion)
-      gap += suggestion.length - text.substring(from,to+1).length
+      if(result['Suggestions'].length != 0)
+        from = result['From']
+        to = result['To']
+        l = text.substring(from,to+1)
+        suggestion = '<font color="{0}">' + result['Suggestions'][result['Suggestions'].length-1]['Text'] + '</font>'
+        suggestion_i = '<font color="{0}">' + l + '</font>'
+        correct_text = replace_range(correct_text, from+gap, l.length + from+gap, suggestion)
+        incorrect_text = replace_range(incorrect_text, from+gap_i, l.length + from+gap_i, suggestion_i)
+        gap += suggestion.length - l.length
+        gap_i += suggestion_i.length - l.length
+    correct_text = correct_text.format([correct_color])
     incorrect_text = incorrect_text.format([incorrect_color])
+
     return [correct_text,incorrect_text]

@@ -72,7 +72,7 @@ GingerAPI = (function() {
   };
 
   GingerAPI.prototype.parse = function(text, json_obj, correct_color, incorrect_color) {
-    var correct_text, from, gap, incorrect_text, result, suggestion, to, _i, _j, _len, _len1, _ref, _ref1;
+    var correct_text, from, gap, gap_i, incorrect_text, l, result, suggestion, suggestion_i, to, _i, _len, _ref;
 
     if (correct_color == null) {
       correct_color = '#0099ff';
@@ -81,28 +81,25 @@ GingerAPI = (function() {
       incorrect_color = '#ff0033';
     }
     correct_text = text;
+    incorrect_text = text;
     gap = 0;
+    gap_i = 0;
     _ref = json_obj['LightGingerTheTextResult'];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       result = _ref[_i];
-      from = result['From'];
-      to = result['To'];
-      suggestion = '<font color="{0}">' + result['Suggestions'][0]['Text'] + '</font>';
-      correct_text = replace_range(correct_text, from + gap, text.substring(from, to + 1).length + from + gap, suggestion);
-      gap += suggestion.length - text.substring(from, to + 1).length;
+      if (result['Suggestions'].length !== 0) {
+        from = result['From'];
+        to = result['To'];
+        l = text.substring(from, to + 1);
+        suggestion = '<font color="{0}">' + result['Suggestions'][result['Suggestions'].length - 1]['Text'] + '</font>';
+        suggestion_i = '<font color="{0}">' + l + '</font>';
+        correct_text = replace_range(correct_text, from + gap, l.length + from + gap, suggestion);
+        incorrect_text = replace_range(incorrect_text, from + gap_i, l.length + from + gap_i, suggestion_i);
+        gap += suggestion.length - l.length;
+        gap_i += suggestion_i.length - l.length;
+      }
     }
     correct_text = correct_text.format([correct_color]);
-    incorrect_text = text;
-    gap = 0;
-    _ref1 = json_obj['LightGingerTheTextResult'];
-    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-      result = _ref1[_j];
-      from = result['From'];
-      to = result['To'];
-      suggestion = '<font color="{0}">' + text.substring(from, to + 1) + '</font>';
-      incorrect_text = replace_range(incorrect_text, from + gap, text.substring(from, to + 1).length + from + gap, suggestion);
-      gap += suggestion.length - text.substring(from, to + 1).length;
-    }
     incorrect_text = incorrect_text.format([incorrect_color]);
     return [correct_text, incorrect_text];
   };
