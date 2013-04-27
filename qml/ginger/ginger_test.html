@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<script type="text/javascript" src="jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="ginger_api.js"></script>
+<script type="text/javascript">
+    var ginger = new GingerAPI();
+    var url = ginger.build_url('hello every one!');
+    var text = "Enter you're text hear...";
+    var json_str = '{"LightGingerTheTextResult":[{"Confidence":4,"From":6,"LrnFrg":"Enter you\'re text here","LrnFrgOrigIndxs":[{"From":6,"To":8},{"From":9,"To":11}],"Mistakes":[{"Definition":"second person pronoun; the person addressed","CanAddToDict":false,"From":6,"To":8},{"CanAddToDict":false,"From":9,"To":11}],"ShouldReplace":true,"Suggestions":[{"Definition":"of you or yourself","LrnCatId":46,"Text":"your"}],"To":11,"TopLrnCatId":46,"Type":2,"UXFrgFrom":6,"UXFrgTo":21},{"Confidence":4,"From":18,"LrnFrg":"Enter your text hear","LrnFrgOrigIndxs":[{"From":16,"To":19}],"Mistakes":[{"Definition":"perceive (sound) via the auditory sense","CanAddToDict":false,"From":18,"To":21}],"ShouldReplace":true,"Suggestions":[{"Definition":"in or at this place; where the speaker or writer is","LrnCatId":46,"Text":"here"}],"To":21,"TopLrnCatId":46,"Type":2,"UXFrgFrom":6,"UXFrgTo":21}]}';
+    var json = JSON.parse(json_str);
+    result = ginger.parse(text, json);
+    console.log(result);
+</script>
+</body>
+</html>
