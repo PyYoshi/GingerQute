@@ -96,8 +96,12 @@ Rectangle {
         y: 174
         width: 183
         height: 61
-        radius: 17
+        color: "#201f1f"
+        radius: 20
+        border.width: 5
+        border.color: "#2f2e2e"
         smooth : true
+        /*
         gradient: Gradient {
             GradientStop {
                 position: 0
@@ -109,6 +113,7 @@ Rectangle {
                 color: "#2d2d2d"
             }
         }
+        */
         MouseArea {
             id: gingerButtonMouseArea
             x: 0
@@ -159,16 +164,22 @@ Rectangle {
                 PropertyChanges {
                     target: gingerButtonRectangle
                     // TODO: ボタンを押した時の挙動追加
-
+                    color: "#696969"
+                    border.color: "#D3D3D3"
+                }
+                PropertyChanges {
+                    target: gingerButtonText
+                    // TODO: ボタンにマウスを重ねた時の挙動追加
+                    color: "#ADFF2F"
                 }
             },
             State {
                 name: "Hover"
                 when: gingerButtonMouseArea.containsMouse
                 PropertyChanges {
-                    target: gingerButtonRectangle
+                    target: gingerButtonText
                     // TODO: ボタンにマウスを重ねた時の挙動追加
-
+                    color: "#ADFF2F"
                 }
             }
         ]
