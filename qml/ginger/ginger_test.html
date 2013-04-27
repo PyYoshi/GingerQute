@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Ginger API Test</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css"/>
 </head>
 <body>
-
-<script type="text/javascript" src="ginger_api.js"></script>
-<script type="text/javascript">
-    var ginger = new GingerAPI();
-    var url = ginger.build_url('hello every one!');
-    var text = "Enter you're text hear...";
-    var json_str = '{"LightGingerTheTextResult":[{"Confidence":4,"From":6,"LrnFrg":"Enter you\'re text here","LrnFrgOrigIndxs":[{"From":6,"To":8},{"From":9,"To":11}],"Mistakes":[{"Definition":"second person pronoun; the person addressed","CanAddToDict":false,"From":6,"To":8},{"CanAddToDict":false,"From":9,"To":11}],"ShouldReplace":true,"Suggestions":[{"Definition":"of you or yourself","LrnCatId":46,"Text":"your"}],"To":11,"TopLrnCatId":46,"Type":2,"UXFrgFrom":6,"UXFrgTo":21},{"Confidence":4,"From":18,"LrnFrg":"Enter your text hear","LrnFrgOrigIndxs":[{"From":16,"To":19}],"Mistakes":[{"Definition":"perceive (sound) via the auditory sense","CanAddToDict":false,"From":18,"To":21}],"ShouldReplace":true,"Suggestions":[{"Definition":"in or at this place; where the speaker or writer is","LrnCatId":46,"Text":"here"}],"To":21,"TopLrnCatId":46,"Type":2,"UXFrgFrom":6,"UXFrgTo":21}]}';
-    var json = JSON.parse(json_str);
-    result = ginger.parse(text, json);
-    console.log(result);
-</script>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+    <script type="text/javascript" src="ginger_api.js"></script>
+    <script type="text/javascript">
+        var ginger = new GingerAPI();
+        var text_1 = "Enter you're text hear...";
+        var text_2 = "GingerQuote is unofficial Ginger client. written in QML";
+        var json_str_1 = '{"LightGingerTheTextResult":[{"Confidence":4,"From":6,"LrnFrg":"Enter you\'re text here","LrnFrgOrigIndxs":[{"From":6,"To":8},{"From":9,"To":11}],"Mistakes":[{"Definition":"second person pronoun; the person addressed","CanAddToDict":false,"From":6,"To":8},{"CanAddToDict":false,"From":9,"To":11}],"ShouldReplace":true,"Suggestions":[{"Definition":"of you or yourself","LrnCatId":46,"Text":"your"}],"To":11,"TopLrnCatId":46,"Type":2,"UXFrgFrom":6,"UXFrgTo":21},{"Confidence":4,"From":18,"LrnFrg":"Enter your text hear","LrnFrgOrigIndxs":[{"From":16,"To":19}],"Mistakes":[{"Definition":"perceive (sound) via the auditory sense","CanAddToDict":false,"From":18,"To":21}],"ShouldReplace":true,"Suggestions":[{"Definition":"in or at this place; where the speaker or writer is","LrnCatId":46,"Text":"here"}],"To":21,"TopLrnCatId":46,"Type":2,"UXFrgFrom":6,"UXFrgTo":21}]}';
+        var json_str_2 = '{"LightGingerTheTextResult":[{"Confidence":3,"From":0,"LrnFrg":"GingerQuote is an unofficial finger client","LrnFrgOrigIndxs":[{"From":0,"To":10}],"Mistakes":[{"CanAddToDict":true,"From":0,"To":10}],"Suggestions":[],"To":10,"TopLrnCatId":31,"Type":1,"UXFrgFrom":0,"UXFrgTo":38,"Unsure":true},{"Confidence":4,"From":15,"LrnFrg":"GingerQuote is unofficial Ginger client","LrnFrgOrigIndxs":[{"From":15,"To":24},{"From":26,"To":31},{"From":33,"To":38}],"Mistakes":[{"CanAddToDict":false,"From":15,"To":24},{"CanAddToDict":false,"From":26,"To":31},{"CanAddToDict":false,"From":33,"To":38}],"ShouldReplace":true,"Suggestions":[{"LrnCatId":12,"Text":"an unofficial finger client"},{"LrnCatId":12,"Text":"an unofficial Ginger client"},{"LrnCatId":13,"Text":"the unofficial Ginger client"}],"To":38,"TopLrnCatId":12,"Type":3,"UXFrgFrom":0,"UXFrgTo":38},{"Confidence":4,"From":41,"LrnFrg":"written in QML","LrnFrgOrigIndxs":[{"From":0,"To":6}],"Mistakes":[{"Definition":"set down in writing in any of various ways","CanAddToDict":false,"From":41,"To":47}],"ShouldReplace":true,"Suggestions":[{"LrnCatId":45,"Text":"Written"}],"To":47,"TopLrnCatId":45,"Type":1,"UXFrgFrom":41,"UXFrgTo":47}]}';
+        var result_1_correct = 'Enter <font color="#0099ff">your</font> text <font color="#0099ff">here</font>...';
+        var result_1_incorrect = 'Enter <font color="#ff0033">you\'re</font> text <font color="#ff0033">hear</font>...';
+        var result_2_correct = 'GingerQuote is <font color="#0099ff">the unofficial Ginger client</font>. <font color="#0099ff">Written</font> in QML';
+        var result_2_incorrect = 'GingerQuote is <font color="#ff0033">unofficial Ginger client</font>. <font color="#ff0033">written</font> in QML';
+        test("Parse Text 1", function() {
+            var result = ginger.parse(text_1, JSON.parse(json_str_1));
+            ok(result[0] === result_1_correct && result[1] === result_1_incorrect, result);
+        });
+        test("Parse Text 2", function() {
+            var result = ginger.parse(text_2, JSON.parse(json_str_2));
+            ok(result[0] === result_2_correct && result[1] === result_2_incorrect, result);
+        });
+    </script>
 </body>
 </html>
