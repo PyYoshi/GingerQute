@@ -115,6 +115,7 @@ Rectangle {
             y: 0
             width: 183
             height: 61
+            hoverEnabled: true
             Text {
                 id: gingerButtonText
                 x: 0
@@ -131,8 +132,7 @@ Rectangle {
                 font.pixelSize: 36
             }
             onPressed: {
-                // Enter you're text hear...
-                console.log(rawTextEdit.text)
+                correctTextEdit.text = ''
                 if(rawTextEdit.text.length !== 0){
                     var ginger = new Ginger.GingerAPI()
                     var api_url = ginger.build_url(rawTextEdit.text)
@@ -145,6 +145,7 @@ Rectangle {
                             rawTextEdit.text = qsTr(result[1].replace(/(<([^>]+)>)/ig,""))
                             correctTextEdit.text = qsTr(result[0])
                         }else if (xhr.readyState === 4 && xhr.status !== 200){
+
                         }
                     }
                     xhr.send(null)
@@ -156,7 +157,7 @@ Rectangle {
                 name: "Press"
                 when: gingerButtonMouseArea.pressed
                 PropertyChanges {
-                    target: gingerButtonMouseArea
+                    target: gingerButtonRectangle
                     // TODO: ボタンを押した時の挙動追加
 
                 }
@@ -165,7 +166,7 @@ Rectangle {
                 name: "Hover"
                 when: gingerButtonMouseArea.containsMouse
                 PropertyChanges {
-                    target: gingerButtonMouseArea
+                    target: gingerButtonRectangle
                     // TODO: ボタンにマウスを重ねた時の挙動追加
 
                 }
